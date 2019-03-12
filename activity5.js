@@ -2,17 +2,10 @@ var renderer = null,
 scene = null, 
 root = null,
 robot_idle = null,
-robot_attack = null,
-flamingo = null,
-stork = null,
 group = null
 
 var deadAnimator;
-var morphs = [];
 
-var timeLimit = 60;
-
-var duration = 20000; // ms
 var currentTime = Date.now();
 var currentTimeSpawn = Date.now(); 
 var robot_mixer = {}
@@ -34,21 +27,6 @@ var gameMinutes = 0;
 var robotsMax=6;
 var robotsSpawned = 0;
 var highScore = 0;
-
-function changeAnimation(animation_text)
-{
-    animation = animation_text;
-
-    if(animation =="dead")
-    {
-        createDeadAnimation();
-    }
-    else
-    {
-        robot_idle.rotation.x = 0;
-        robot_idle.position.y = 0;
-    }
-}
 
 //https://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
 function getRandomInt(min, max) 
@@ -185,10 +163,10 @@ function animate() {
         
         if(names==0)
         {
-    
             scene.remove(robots[0]);
             robotsSpawned--;
         }
+        
         names+=1;
 
     }
@@ -198,7 +176,6 @@ function animate() {
         gameStarted = now;
         gameMinutes+=1;
         document.getElementById("time").innerHTML = 60-gameMinutes;
-        console.log(robots);
         if(gameMinutes>=60)
         {
             document.getElementById("startButton").disabled = false;
@@ -274,9 +251,6 @@ function onDocumentMouseDown(event)
             robots[CLICKED.parent.name].status=Date.now();
             var attackAnimation = robot_mixers[CLICKED.parent.name].clipAction(robots_animations[1]).play();
             dieClip = robot_mixers[CLICKED.parent.name].clipAction(clip);
-
-            //robots[actual].position.z
-
 
             dieClip.setLoop(THREE.LoopOnce);
             dieClip.clampWhenFinished = true;
